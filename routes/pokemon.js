@@ -14,15 +14,15 @@ app.get('/', async (req, res) => {
 
 app.get('/:id', async (req, res) => {
     const { id } = req.params
-    const responseId = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon/${id}`
-        )
-    const pokeId = Number(id)
-      
-    if (pokeId) {
+    
+    try {
+        const responseId = await axios.get(
+            `https://pokeapi.co/api/v2/pokemon/${id}`
+            )
+        const pokeId = Number(id)
         res.json(responseId.data)
-    } else {
-        res.status(404).send('Not Found')
+    } catch (error) {
+        res.status(error.response.status).send(error.response.data)
     }
 })
 
